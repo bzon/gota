@@ -1,0 +1,5 @@
+ios_assets/
+android_assets/
+*.plist
+*.html
+*.json
