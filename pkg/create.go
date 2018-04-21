@@ -1,4 +1,3 @@
-// https://support.magplus.com/hc/en-us/articles/203808598-iOS-Creating-an-Installation-Link-for-Your-Enterprise-App
 package gota
 
 import (
@@ -10,10 +9,10 @@ import (
 
 // AppFile contains common fields of APK and IPA file
 type AppFile struct {
-	Title, BuildDate, BuildNumber, DownloadURL string
+	Title, BuildDate, BuildNumber, DownloadURL, SourceFile string
 }
 
-// AndroidAppData fields for APK file upload
+// AndroidAPK fields for APK file upload
 type AndroidAPK struct {
 	AppFile
 	VersionName, VersionCode string
@@ -25,14 +24,17 @@ type IOSIPA struct {
 	PlistURL, BundleID, BundleVersion string
 }
 
+// MobileApp allows IOSIPA and AndroidAPK structs to be able use generateCommonFiles function
 type MobileApp interface {
 	GenerateAssets() error
 	FullVersion() string
+	IsAndroid() bool
 }
 
 // GenerateAssets creates files for iOS
 func (ipa IOSIPA) GenerateAssets() error {
-	os.Mkdir("ios_assets", 0755)
+	os.Remove("ios_assets")
+	os.Mkdir("ios_assets", 0700)
 	ipa.PlistURL = url.QueryEscape(ipa.PlistURL)
 	if err := executeTemplate(ipa, "ios_assets/app.plist", plistTemplateString); err != nil {
 		return err
@@ -45,7 +47,8 @@ func (ipa IOSIPA) GenerateAssets() error {
 
 // GenerateAssets creates files for Android
 func (apk AndroidAPK) GenerateAssets() error {
-	os.Mkdir("android_assets", 0755)
+	os.Remove("android_assets")
+	os.Mkdir("android_assets", 0700)
 	if err := generateCommonFiles(apk, "android_assets"); err != nil {
 		return err
 	}
@@ -60,6 +63,16 @@ func (apk AndroidAPK) FullVersion() string {
 // FullVersion returns the full version for iOS
 func (ipa IOSIPA) FullVersion() string {
 	return ipa.BundleVersion + "." + ipa.BuildNumber
+}
+
+// IsAndroid is used for templating conditions. Returns true for android
+func (apk AndroidAPK) IsAndroid() bool {
+	return true
+}
+
+// IsAndroid is used for templating conditions. Returns true for iOS
+func (ipa IOSIPA) IsAndroid() bool {
+	return false
 }
 
 // Create index.html and version.json
