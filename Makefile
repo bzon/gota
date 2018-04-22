@@ -17,6 +17,7 @@ LDFLAGS = -ldflags "-X main.VERSION=${VERSION} -X main.COMMIT=${COMMIT} -X main.
 
 # Build the project
 all: clean getdep linux darwin windows
+	cd ${BINDIR} && shasum -a 256 ** > shasum256.txt
 
 create_bin_dir:
 	rm -fr ${BINDIR}

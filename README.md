@@ -12,7 +12,40 @@ Automate the beta testing distribution of your Android and iOS application files
 * [ ] Upload and generate site to a Nexus 2 Site Repository (untested)
 * [ ] Upload and generate site to an Amazon S3 bucket
 
-## User Guide
+## Installation
+
+Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/).
+
+## Commands Guide
+
+Using the help flag.
+
+```bash
+$ ./gota-darwin-amd64 --help
+
+Go Over the Air installation for Android APK and iOS Ipa files! Source: https://github.com/bzon/gota
+
+Usage:
+  gota [flags]
+  gota [command]
+
+Available Commands:
+  help        Help about any command
+  nexus       Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
+
+Flags:
+      --buildNumber string     the apk or ipa build number.
+      --bundleID string        if srcFile type is '.ipa', this is required. (example: com.example.bundleid)
+      --bundleVersion string   if srcFile type is '.ipa', this is required.
+      --destDir string         root directory of the site to create.
+  -h, --help                   help for gota
+      --srcFile string         the apk or ipa file.
+      --title string           application name to be displayed in the site
+      --versionCode string     if srcfile is '.apk', this is required.
+      --versionName string     if srcFile is '.apk', this is required.
+
+Use "gota [command] --help" for more information about a command.
+```
 
 ### Nexus APK Upload
 
@@ -47,16 +80,30 @@ Uploaded site structure
 
 ## Development Setup
 
-### Nexus
-
-You must have a Nexus 3 server running in your machine. Get it via docker: `docker run -d -p 8081:8081 --name nexus3` then create a Raw Repository with a repository id `site`.
+### Build and Test
 
 ```bash
 go get -v ./...
 go test -v ./...
 ```
 
-### S3
+If you are on Windows, ensure to go get spf13/cobra's dependency for it. 
+
+```bash
+GOOS=windows go get -v -u github.com/spf13/cobra
+go get -v ./...
+go test -v ./...
+```
+
+### Nexus Feature Test
+
+You must have a Nexus 3 server running in your machine. 
+
+Get it easily via docker command: `docker run -d -p 8081:8081 --name nexus3`.
+
+Then, create a Raw Repository with a repository id `site`.
+
+### S3 Feature Test
 
 WIP
 
