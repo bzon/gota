@@ -1,8 +1,12 @@
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
-
 # GOTA
 
-Automate the beta testing distribution of your Android and iOS application files with gota. Gota is a [Golang](http://golang.org/) powered Over the Air Installation site creation tool.
+[![Go Report Card](https://goreportcard.com/badge/github.com/bzon/gota)](https://goreportcard.com/report/github.com/bzon/gota)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/bzon/gota)
+[![GitHub tag](https://img.shields.io/github/tag/bzon/gota.svg)](https://github.com/bzon/gota/releases/)
+
+Automate the beta testing distribution of your Android and iOS application files with gota.
+
+Gota is a [Golang](http://golang.org/) powered Over the Air Installation site creation tool.
 
 ![](./docs/gota_html.png)
 
@@ -18,11 +22,9 @@ Get the executable binary for your platform from the [Release Page](https://gith
 
 ## Commands Guide
 
-Using the help flag.
+Gota command help `gota --help`
 
 ```bash
-$ ./gota-darwin-amd64 --help
-
 Go Over the Air installation for Android APK and iOS Ipa files! Source: https://github.com/bzon/gota
 
 Usage:
@@ -47,16 +49,54 @@ Flags:
 Use "gota [command] --help" for more information about a command.
 ```
 
+Nexus command help `gota nexus --help`
+
+```bash
+Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
+
+Usage:
+  gota nexus [flags]
+
+Flags:
+  -h, --help                   help for nexus
+      --nexusHost string       nexus host url (including http protocol)
+      --nexusPassword string   nexus password (can be passed as env variable $NEXUS_PASSWORD)
+      --nexusRepo string       nexus site repository id (nexus v3 raw repository not maven!)
+      --nexusUser string       nexus username (can be passed as env variable $NEXUS_USER)
+
+Global Flags:
+      --buildNumber string     the apk or ipa build number.
+      --bundleID string        if srcFile type is '.ipa', this is required. (example: com.example.bundleid)
+      --bundleVersion string   if srcFile type is '.ipa', this is required.
+      --destDir string         root directory of the site to create.
+      --srcFile string         the apk or ipa file.
+      --title string           application name to be displayed in the site
+      --versionCode string     if srcfile is '.apk', this is required.
+      --versionName string     if srcFile is '.apk', this is required.
+```
+
 ### Nexus APK Upload
 
 Upload an APK file to a Nexus Site Repository
 
 ```bash
-./gota nexus --nexusHost http://localhost:8081 --nexusRepo site --nexusUser admin --nexusPassword admin123 --destDir android --buildNumber 1 --srcFile pkg/resources/DarkSouls.apk --title "DarkSouls" --versionName "1.0.0" --versionCode "10222333"
+./gota nexus --nexusHost http://localhost:8081 \
+            --nexusRepo site \
+            --nexusUser admin \
+            --nexusPassword admin123 \
+            --destDir android \
+            --buildNumber 1 \
+            --srcFile pkg/resources/DarkSouls.apk \
+            --title "DarkSouls" \
+            --versionName "1.0.0" \
+            --versionCode "10222333"
+
 uploaded to nexus: http://localhost:8081/repository/site/android/version.json
 uploaded to nexus: http://localhost:8081/repository/site/android/1.0.0.10222333/index.html
 uploaded to nexus: http://localhost:8081/repository/site/android/1.0.0.10222333/DarkSouls.apk
 ```
+
+You should now be able to install the APK file from your Android Phone by accessing the http://localhost:8081/repository/site/android/1.0.0.10222333/index.html URL.
 
 Uploaded site structure
 
@@ -67,12 +107,24 @@ Uploaded site structure
 Upload an IPA file to a Nexus Site Repository
 
 ```bash
-./gota nexus --nexusHost http://localhost:8081 --nexusRepo site --nexusUser admin --nexusPassword admin123 --destDir ios --buildNumber 1 --srcFile pkg/resources/DarkSouls.ipa --title DarkSouls --bundleVersion 1.0.0 --bundleID com.example.com
+./gota nexus --nexusHost http://localhost:8081 \
+            --nexusRepo site \
+            --nexusUser admin \
+            --nexusPassword admin123 \
+            --destDir ios \
+            --buildNumber 1 \
+            --srcFile pkg/resources/DarkSouls.ipa \
+            --title DarkSouls \
+            --bundleVersion 1.0.0 \
+            --bundleID com.example.com
+
 uploaded to nexus: http://localhost:8081/repository/site/ios/version.json
 uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/DarkSouls.plist
 uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/index.html
 uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/DarkSouls.ipa
 ```
+
+You should now be able to install the IPA file from your iPhone by accessing the http://localhost:8081/repository/site/ios/1.0.0.1/index.html URL.
 
 Uploaded site structure
 
