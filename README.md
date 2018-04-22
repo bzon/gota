@@ -2,49 +2,63 @@
 
 # GOTA
 
-[Go](http://golang.org/) Over the Air installation for Android APK and iOS Ipa files!
+Automate the beta testing distribution of your Android and iOS application files with gota. Gota is a [Golang](http://golang.org/) powered Over the Air Installation site creation tool.
 
-![](./assets/gota_html.png)
+![](./docs/gota_html.png)
 
 ## Feature Checklist
 
-* [ ] Upload and generate site to a Nexus 3 Site Repository
-* [ ] Upload and generate site to a Nexus 2 Site Repository
+* [x] Upload and generate site to a Nexus 3 Site Repository
+* [ ] Upload and generate site to a Nexus 2 Site Repository (untested)
 * [ ] Upload and generate site to an Amazon S3 bucket
 
 ## User Guide
 
-Upload to a Nexus(3) Site Repository
+### Nexus APK Upload
+
+Upload an APK file to a Nexus Site Repository
 
 ```bash
-gota nexus -srcFile /tmp/DarkSouls.ipa \
-    -bundleVersion 1.0.0 \
-    -buildNumber 55 \
-    -destDir ios_ota \
-    -nexusRepo site \
-    -nexusUser admin \
-    -nexusPassword admin123 \
-    -nexusHost http://localhost:8081
+./gota nexus --nexusHost http://localhost:8081 --nexusRepo site --nexusUser admin --nexusPassword admin123 --destDir android --buildNumber 1 --srcFile pkg/resources/DarkSouls.apk --title "DarkSouls" --versionName "1.0.0" --versionCode "10222333"
+uploaded to nexus: http://localhost:8081/repository/site/android/version.json
+uploaded to nexus: http://localhost:8081/repository/site/android/1.0.0.10222333/index.html
+uploaded to nexus: http://localhost:8081/repository/site/android/1.0.0.10222333/DarkSouls.apk
 ```
 
-Upload to an Amazon S3 Bucket
+Uploaded site structure
+
+![](./docs/apk_nexus_uploaded.png)
+
+### Nexus IPA Upload
+
+Upload an IPA file to a Nexus Site Repository
 
 ```bash
-gota s3 -srcFile /tmp/DarkSouls.ipa \
-    -bundleVersion 1.0.0 \
-    -buildNumber 55 \
-    -destDir ios_ota \
-    -s3Bucket examplebucket \
-    -s3ApiKey xxxxx \
-    -s3ApiSecretKey xxxxx \
-    -s3Region xxxx
+./gota nexus --nexusHost http://localhost:8081 --nexusRepo site --nexusUser admin --nexusPassword admin123 --destDir ios --buildNumber 1 --srcFile pkg/resources/DarkSouls.ipa --title DarkSouls --bundleVersion 1.0.0 --bundleID com.example.com
+uploaded to nexus: http://localhost:8081/repository/site/ios/version.json
+uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/DarkSouls.plist
+uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/index.html
+uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/DarkSouls.ipa
 ```
 
-## Development
+Uploaded site structure
+
+![](./docs/ios_nexus_uploaded.png)
+
+## Development Setup
+
+### Nexus
+
+You must have a Nexus 3 server running in your machine. Get it via docker: `docker run -d -p 8081:8081 --name nexus3` then create a Raw Repository with a repository id `site`.
 
 ```bash
+go get -v ./...
 go test -v ./...
 ```
+
+### S3
+
+WIP
 
 ## Inspirations and References
 
