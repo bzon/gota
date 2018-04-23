@@ -2,6 +2,7 @@ package gota
 
 import (
 	"fmt"
+	htmltemp "html/template"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -58,7 +59,7 @@ func (n *Nexus) NexusUploadIOSAssets(ipa *IOSIPA, dir string) ([]string, error) 
 	ipaIndexHTMLSitePath := ipa.FullVersion() + "/index.html"
 	// assume the url before uploaded for templating
 	ipa.DownloadURL = n.getRepoURL() + "/" + dir + "/" + ipaSitePath
-	ipa.PlistURL = n.getRepoURL() + "/" + dir + "/" + ipaPlistSitePath
+	ipa.PlistURL = htmltemp.URL(n.getRepoURL() + "/" + dir + "/" + ipaPlistSitePath)
 	// create the assets
 	assets := []string{}
 	if err := ipa.GenerateAssets(); err != nil {

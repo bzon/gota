@@ -2,9 +2,10 @@ package gota
 
 import (
 	"fmt"
-	"html/template"
-	"net/url"
+	htmltemp "html/template"
 	"os"
+	"path/filepath"
+	txttemp "text/template"
 )
 
 // AppFile contains common fields of APK and IPA file
@@ -21,7 +22,8 @@ type AndroidAPK struct {
 // IOSIPA fields for IPA file upload
 type IOSIPA struct {
 	AppFile
-	PlistURL, BundleID, BundleVersion string
+	BundleID, BundleVersion string
+	PlistURL                htmltemp.URL
 }
 
 // MobileApp allows IOSIPA and AndroidAPK structs to be able use generateCommonFiles function
@@ -35,7 +37,7 @@ type MobileApp interface {
 func (ipa IOSIPA) GenerateAssets() error {
 	os.Remove("ios_assets")
 	os.Mkdir("ios_assets", 0700)
-	ipa.PlistURL = url.QueryEscape(ipa.PlistURL)
+	//	ipa.PlistURL = url.QueryEscape(ipa.PlistURL)
 	if err := executeTemplate(ipa, "ios_assets/app.plist", plistTemplateString); err != nil {
 		return err
 	}
@@ -87,7 +89,19 @@ func generateCommonFiles(app MobileApp, dir string) error {
 }
 
 func executeTemplate(app MobileApp, filename, templateVar string) error {
-	templ := template.Must(template.New("templ").Parse(templateVar))
+	if filepath.Ext(filename) == ".html" {
+		templ := htmltemp.Must(htmltemp.New("templ").Parse(templateVar))
+		file, err := os.Create(filename)
+		if err != nil {
+			return fmt.Errorf("failed creating %s got error %v", filename, err)
+		}
+		defer file.Close()
+		if err := templ.Execute(file, app); err != nil {
+			return fmt.Errorf("failed templating %s got error %v", filename, err)
+		}
+		return nil
+	}
+	templ := txttemp.Must(txttemp.New("templ").Parse(templateVar))
 	file, err := os.Create(filename)
 	if err != nil {
 		return fmt.Errorf("failed creating %s got error %v", filename, err)

@@ -5,7 +5,7 @@ const versionTemplateString = `{
 {{if .IsAndroid -}}
   "updateUrl": "{{.DownloadURL}}"
 {{else -}}
-  "updateUrl": "itms-services://?action=download-manifest&url={{.PlistURL}}"
+  "updateUrl": "itms-services://?action=download-manifest&amp;url={{.PlistURL}}"
 {{end -}}
 }`
 
@@ -17,6 +17,7 @@ const plistTemplateString = `<?xml version="1.0" encoding="UTF-8"?>
   <array>
     <dict>
       <key>assets</key>
+	  <array>
         <dict>
           <key>kind</key>
           <string>software-package</string>
@@ -110,7 +111,7 @@ var indexHTMLTemplateString = `<html>
 	{{- else}}	
     <div class="oneRow">
       <span class="download" id="ios">
-        <a href="itms-services://?action=download-manifest&url={{.PlistURL}}" id="text" class="btn btn-lg btn-default" onclick="document.getElementById('finished').id = '';">
+        <a href="itms-services://?action=download-manifest&amp;url={{.PlistURL}}" id="text" class="btn btn-lg btn-default" onclick="document.getElementById('finished').id = '';">
 			Install {{.Title}} {{.BundleVersion}} ({{.BuildNumber}})
         </a>
         <br>
