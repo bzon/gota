@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	gota "github.com/bzon/gota/pkg"
+	"github.com/bzon/gota/parser"
 	"github.com/spf13/cobra"
 )
 
@@ -24,20 +24,20 @@ func missingFlagError(cmd *cobra.Command, f string) {
 	os.Exit(1)
 }
 
-func newApp() gota.MobileApp {
-	appFile := gota.AppFile{
+func newApp() parser.MobileApp {
+	appFile := parser.AppFile{
 		Title:       title,
 		BuildNumber: buildNumber,
 		SourceFile:  srcFile,
 	}
 	if fileExt() == ".ipa" {
-		return gota.IOSIPA{
+		return parser.IOSIPA{
 			AppFile:       appFile,
 			BundleID:      bundleID,
 			BundleVersion: bundleVersion,
 		}
 	} else {
-		return gota.AndroidAPK{
+		return parser.AndroidAPK{
 			AppFile:     appFile,
 			VersionCode: versionCode,
 			VersionName: versionName,

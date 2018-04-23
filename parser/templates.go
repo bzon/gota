@@ -1,4 +1,4 @@
-package gota
+package parser
 
 const versionTemplateString = `{
 "latestVersion": "{{.FullVersion}}",

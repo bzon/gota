@@ -1,4 +1,4 @@
-package gota
+package nexus
 
 import (
 	"fmt"
@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/bzon/gota/parser"
 )
 
 // Nexus contains the fields requied for accessing a nexus server
@@ -52,7 +54,7 @@ func (n *Nexus) getRepoURL() string {
 }
 
 // NexusUploadIOSAssets wraps NexusUpload to upload all files for iOS to nexus
-func (n *Nexus) NexusUploadIOSAssets(ipa *IOSIPA, dir string) ([]string, error) {
+func (n *Nexus) NexusUploadIOSAssets(ipa *parser.IOSIPA, dir string) ([]string, error) {
 	// Upload in directory with FullVersion() as name
 	ipaSitePath := ipa.FullVersion() + "/" + filepath.Base(ipa.SourceFile)
 	ipaPlistSitePath := ipa.FullVersion() + "/" + ipa.Title + ".plist"
@@ -90,7 +92,7 @@ func (n *Nexus) NexusUploadIOSAssets(ipa *IOSIPA, dir string) ([]string, error) 
 }
 
 // NexusUploadAndroidAssets wraps NexusUpload to upload all files for android to nexus
-func (n *Nexus) NexusUploadAndroidAssets(apk *AndroidAPK, dir string) ([]string, error) {
+func (n *Nexus) NexusUploadAndroidAssets(apk *parser.AndroidAPK, dir string) ([]string, error) {
 	// Upload in directory with FullVersion() as name
 	apkSitePath := apk.FullVersion() + "/" + filepath.Base(apk.SourceFile)
 	apkIndexHTMLSitePath := apk.FullVersion() + "/index.html"

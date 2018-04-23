@@ -18,12 +18,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
+	"github.com/bzon/gota/parser"
 
-	gota "github.com/bzon/gota/pkg"
+	nexuspkg "github.com/bzon/gota/nexus"
+	"github.com/spf13/cobra"
 )
 
-var nexus gota.Nexus
+var nexus nexuspkg.Nexus
 
 // nexusCmd represents the nexus command
 var nexusCmd = &cobra.Command{
@@ -35,11 +36,11 @@ var nexusCmd = &cobra.Command{
 		var err error
 		app := newApp()
 		switch app.(type) {
-		case gota.IOSIPA:
-			ipa := app.(gota.IOSIPA)
+		case parser.IOSIPA:
+			ipa := app.(parser.IOSIPA)
 			assets, err = nexus.NexusUploadIOSAssets(&ipa, destDir)
-		case gota.AndroidAPK:
-			apk := app.(gota.AndroidAPK)
+		case parser.AndroidAPK:
+			apk := app.(parser.AndroidAPK)
 			assets, err = nexus.NexusUploadAndroidAssets(&apk, destDir)
 		}
 		if err != nil {

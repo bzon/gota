@@ -1,4 +1,4 @@
-package gota
+package parser
 
 import (
 	"fmt"

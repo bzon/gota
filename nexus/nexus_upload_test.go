@@ -1,9 +1,11 @@
-package gota
+package nexus
 
 import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/bzon/gota/parser"
 )
 
 var nexus = Nexus{
@@ -15,7 +17,7 @@ var nexus = Nexus{
 
 func TestNexusUpload(t *testing.T) {
 	var testComponent = NexusComponent{
-		SourceFile: "resources/index.html",
+		SourceFile: "../resources/index.html",
 		Filename:   "index.html",
 		Directory:  "go_upload_test",
 	}
@@ -27,22 +29,22 @@ func TestNexusUpload(t *testing.T) {
 }
 
 func TestGeneratedAssetsNexusUpload(t *testing.T) {
-	var ipa = IOSIPA{
-		AppFile: AppFile{
+	var ipa = parser.IOSIPA{
+		AppFile: parser.AppFile{
 			Title:       "DarkSouls",
 			BuildDate:   time.Now().Format(time.RFC822),
 			BuildNumber: "99",
-			SourceFile:  "resources/DarkSouls.ipa", // dummy file
+			SourceFile:  "../resources/DarkSouls.ipa", // dummy file
 		},
 		BundleID:      "com.example.dark.souls",
 		BundleVersion: "1.0.0",
 	}
-	var apk = AndroidAPK{
-		AppFile: AppFile{
+	var apk = parser.AndroidAPK{
+		AppFile: parser.AppFile{
 			Title:       "DarkSouls Android",
 			BuildDate:   time.Now().Format(time.RFC822),
 			BuildNumber: "22",
-			SourceFile:  "resources/DarkSouls.apk", // dummy file
+			SourceFile:  "../resources/DarkSouls.apk", // dummy file
 		},
 		VersionName: "1.0.0",
 		VersionCode: "100222333",
