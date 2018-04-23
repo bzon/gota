@@ -1,4 +1,4 @@
-package gota
+package parser
 
 import (
 	"testing"
@@ -12,7 +12,7 @@ func TestGenerateAssets(t *testing.T) {
 			BuildDate:   time.Now().Format(time.RFC822),
 			DownloadURL: "http://s3.amazon.com/bucket/DarkSouls.ipa",
 			BuildNumber: "99",
-			SourceFile:  "resources/DarkSouls.ipa", // dummy file
+			SourceFile:  "../resources/DarkSouls.ipa", // dummy file
 		},
 		PlistURL:      "http://s3.amazon.com/bucket/DarkSouls.plist",
 		BundleID:      "com.example.dark.souls",
@@ -24,7 +24,7 @@ func TestGenerateAssets(t *testing.T) {
 			BuildDate:   time.Now().Format(time.RFC822),
 			DownloadURL: "http://s3.amazon.com/bucket/DarkSouls.apk",
 			BuildNumber: "22",
-			SourceFile:  "resources/DarkSouls.apk", // dummy file
+			SourceFile:  "../resources/DarkSouls.apk", // dummy file
 		},
 		VersionName: "1.0.0",
 		VersionCode: "100222333",
