@@ -104,12 +104,12 @@ func (n *Nexus) NexusUploadAndroidAssets(apk *parser.AndroidAPK, dir string) ([]
 		return assets, err
 	}
 	// upload assets
-	uri, err := n.NexusUpload(NexusComponent{"ios_assets/version.json", "version.json", dir})
+	uri, err := n.NexusUpload(NexusComponent{"android_assets/version.json", "version.json", dir})
 	if err != nil {
 		return assets, err
 	}
 	assets = append(assets, uri)
-	uri, err = n.NexusUpload(NexusComponent{"ios_assets/index.html", apkIndexHTMLSitePath, dir})
+	uri, err = n.NexusUpload(NexusComponent{"android_assets/index.html", apkIndexHTMLSitePath, dir})
 	if err != nil {
 		return assets, err
 	}
