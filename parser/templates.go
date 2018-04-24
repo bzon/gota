@@ -129,7 +129,7 @@ var indexHTMLTemplateString = `<html>
 	Contribute on Github!
     </p>
 	<a href="https://github.com/bzon/gota">
-		<img src="https://github.com/bzon/gota/blob/master/pkg/resources/Octocat.png?raw=true" id="githubLogo" style="width:42px;height:42px;border:0;"/>
+		<img src="https://github.com/bzon/gota/blob/master/resources/Octocat.png?raw=true" id="githubLogo" style="width:42px;height:42px;border:0;"/>
 	</a>
   </body>
 
