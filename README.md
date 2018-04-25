@@ -38,12 +38,13 @@ Upload an APK file to a Nexus Site Repository
             --destDir android \
             --srcFile pkg/resources/DarkSouls.apk \
 
-uploaded to nexus: http://localhost:8081/repository/site/android/version.json
-uploaded to nexus: http://localhost:8081/repository/site/android/1.0.0.10222333/index.html
-uploaded to nexus: http://localhost:8081/repository/site/android/1.0.0.10222333/DarkSouls.apk
+file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/appicon.png
+file uploaded: http://localhost:8081/repository/site/nexus_android_repo/version.json
+file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/index.html
+file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/DarkSouls.apk
 ```
 
-You should now be able to install the APK file from your Android Phone by accessing the http://localhost:8081/repository/site/android/1.0.0.10222333/index.html URL.
+Access the index.html file url from your Android device!
 
 Uploaded site structure
 
@@ -61,13 +62,14 @@ Upload an IPA file to a Nexus Site Repository
             --destDir ios \
             --srcFile pkg/resources/DarkSouls.ipa \
 
-uploaded to nexus: http://localhost:8081/repository/site/ios/version.json
-uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/DarkSouls.plist
-uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/index.html
-uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/DarkSouls.ipa
+file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/appicon.png
+file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/version.json
+file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/index.html
+file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/DarkSouls.ipa
+file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/app.plist
 ```
 
-You should now be able to install the IPA file from your iPhone by accessing the http://localhost:8081/repository/site/ios/1.0.0.1/index.html URL.
+Access the index.html file url from your iPhone device!
 
 Uploaded site structure
 
