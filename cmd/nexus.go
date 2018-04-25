@@ -15,7 +15,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -39,7 +38,7 @@ var nexusCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 		for _, v := range assets {
-			fmt.Println("nexus asset url:", v)
+			log.Println("file uploaded:", v)
 		}
 	},
 }

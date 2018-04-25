@@ -92,9 +92,9 @@ var indexHTMLTemplateString = `<html>
     </style>
 
     <h1 style="text-align: center;">{{.Name}}</h1>
-	<img src="appicon.png" id="appIcon">
 
 	{{if .IsIOS -}}
+	<a href="{{.PlistURL}}"><img src="appicon.png" id="appIcon"></a>
     <div class="oneRow">
       <span class="download" id="ios">
         <a href="itms-services://?action=download-manifest&amp;url={{.PlistURL}}" id="text" class="btn btn-lg btn-default" onclick="document.getElementById('finished').id = '';">
@@ -109,6 +109,7 @@ var indexHTMLTemplateString = `<html>
       App is being installed. Close your Browser using the home button.
     </p>
 	{{- else}}	
+	<a href="{{.DownloadURL}}"><img src="appicon.png" id="appIcon"></a>
     <div class="oneRow">
       <span class="download" id="android">
         <a href="{{.DownloadURL}}" id="text" class="btn btn-lg btn-default" onclick="document.getElementById('finished').id = '';">

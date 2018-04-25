@@ -56,9 +56,9 @@ func (n *Nexus) getRepoURL() string {
 // NexusUploadAssets uploads the generated files by the parser package along with the ipa or apk file
 func (n *Nexus) NexusUploadAssets(app *parser.MobileApp, dir string) ([]string, error) {
 	// create the site path names and assume the url before uploaded for templating
-	appIconPath := app.Version + "/" + parser.AppIconFile
-	appSitePath := app.Version + "/" + filepath.Base(app.File)
-	appIndexHTMLSitePath := app.Version + "/" + parser.IndexHTMLFile
+	appIconPath := app.Version + "/" + app.Build + "/" + parser.AppIconFile
+	appSitePath := app.Version + "/" + app.Build + "/" + filepath.Base(app.File)
+	appIndexHTMLSitePath := app.Version + "/" + app.Build + "/" + parser.IndexHTMLFile
 	app.DownloadURL = n.getRepoURL() + "/" + dir + "/" + appSitePath
 
 	// default directory of assets
