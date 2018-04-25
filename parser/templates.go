@@ -92,6 +92,8 @@ var indexHTMLTemplateString = `<html>
     </style>
 
     <h1 style="text-align: center;">{{.Name}}</h1>
+	<img src="appicon.png" id="appIcon">
+
 	{{if .IsIOS -}}
     <div class="oneRow">
       <span class="download" id="ios">

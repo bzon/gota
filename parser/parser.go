@@ -12,14 +12,14 @@ import (
 )
 
 const (
-	iosDir          = "ios_assets"
-	androidDir      = "android_assets"
-	iosPlistFile    = "app.plist"
-	appIconFile     = "appicon.png"
-	versionJsonFile = "version.json"
-	indexHTMLFile   = "index.html"
-	ipaExt          = ".ipa"
-	apkExt          = ".apk"
+	IOSAssetsDir     = "ios_assets"
+	AndroidAssetsDir = "android_assets"
+	IOSPlistFile     = "app.plist"
+	AppIconFile      = "appicon.png"
+	VersionJsonFile  = "version.json"
+	IndexHTMLFile    = "index.html"
+	IPAExt           = ".ipa"
+	APKExt           = ".apk"
 )
 
 // AppFile contains common fields of APK and IPA file
@@ -33,14 +33,14 @@ type MobileApp struct {
 
 // GenerateAssets creates the site assets that will be uploaded along with the ipa or apk file
 func (app MobileApp) GenerateAssets() error {
-	assetsDir := androidDir
+	assetsDir := AndroidAssetsDir
 	if app.IsIOS() {
-		assetsDir = iosDir
+		assetsDir = IOSAssetsDir
 	}
 	os.Remove(assetsDir)
 	os.Mkdir(assetsDir, 0700)
 	if app.IsIOS() {
-		err := executeTemplate(app, assetsDir+"/"+iosPlistFile, plistTemplateString)
+		err := executeTemplate(app, assetsDir+"/"+IOSPlistFile, plistTemplateString)
 		if err != nil {
 			return err
 		}
@@ -54,7 +54,7 @@ func (app MobileApp) GenerateAssets() error {
 
 // IsIOS is used for templating conditions
 func (app MobileApp) IsIOS() bool {
-	if filepath.Ext(app.File) == ipaExt {
+	if filepath.Ext(app.File) == IPAExt {
 		return true
 	}
 	return false
@@ -64,7 +64,7 @@ func (app MobileApp) IsIOS() bool {
 func generateCommonFiles(app MobileApp, dir string) error {
 	// Create the image png file
 	if app.Icon != nil {
-		img, err := os.Create(dir + "/" + appIconFile)
+		img, err := os.Create(dir + "/" + AppIconFile)
 		if err != nil {
 			return err
 		}
@@ -73,10 +73,10 @@ func generateCommonFiles(app MobileApp, dir string) error {
 			return fmt.Errorf("failed creating an image: %v", err)
 		}
 	}
-	if err := executeTemplate(app, dir+"/"+indexHTMLFile, indexHTMLTemplateString); err != nil {
+	if err := executeTemplate(app, dir+"/"+IndexHTMLFile, indexHTMLTemplateString); err != nil {
 		return err
 	}
-	if err := executeTemplate(app, dir+"/"+versionJsonFile, versionTemplateString); err != nil {
+	if err := executeTemplate(app, dir+"/"+VersionJsonFile, versionTemplateString); err != nil {
 		return err
 	}
 	return nil
