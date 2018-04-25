@@ -27,13 +27,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var srcFile, destDir string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gota",
-	Short: "Go Over the Air installation for Android APK and iOS Ipa files! Source: https://github.com/bzon/gota",
-	Run: func(cmd *cobra.Command, args []string) {
-		validateAndParseArgs(cmd)
-	},
+	Short: "Go Over the Air installation for Android APK and iOS Ipa files!",
+	// Run: func(cmd *cobra.Command, args []string) {
+	// 	appInfo, err := ipapk.NewAppParser(srcFile)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	app.UploadDate = time.Now().Format(time.RFC1123)
+	// 	app.AppInfo = appInfo
+	// 	app.File = srcFile
+	// },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -46,16 +54,8 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&title, "title", "", "application name to be displayed in the site")
 	rootCmd.PersistentFlags().StringVar(&srcFile, "srcFile", "", "the apk or ipa file.")
 	rootCmd.PersistentFlags().StringVar(&destDir, "destDir", "", "root directory of the site to create.")
-	rootCmd.PersistentFlags().StringVar(&buildNumber, "buildNumber", "", "the apk or ipa build number.")
-	rootCmd.PersistentFlags().StringVar(&bundleVersion, "bundleVersion", "", "if srcFile type is '.ipa', this is required.")
-	rootCmd.PersistentFlags().StringVar(&bundleID, "bundleID", "", "if srcFile type is '.ipa', this is required. (example: com.example.bundleid)")
-	rootCmd.PersistentFlags().StringVar(&versionName, "versionName", "", "if srcFile is '.apk', this is required.")
-	rootCmd.PersistentFlags().StringVar(&versionCode, "versionCode", "", "if srcfile is '.apk', this is required.")
-	rootCmd.MarkPersistentFlagRequired("title")
 	rootCmd.MarkPersistentFlagRequired("srcFile")
 	rootCmd.MarkPersistentFlagRequired("destDir")
-	rootCmd.MarkPersistentFlagRequired("buildNumber")
 }
