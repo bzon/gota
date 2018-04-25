@@ -24,56 +24,7 @@ Get the executable binary for your platform from the [Release Page](https://gith
 
 Gota command help `gota --help`
 
-```bash
-Go Over the Air installation for Android APK and iOS Ipa files! Source: https://github.com/bzon/gota
-
-Usage:
-  gota [flags]
-  gota [command]
-
-Available Commands:
-  help        Help about any command
-  nexus       Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
-
-Flags:
-      --buildNumber string     the apk or ipa build number.
-      --bundleID string        if srcFile type is '.ipa', this is required. (example: com.example.bundleid)
-      --bundleVersion string   if srcFile type is '.ipa', this is required.
-      --destDir string         root directory of the site to create.
-  -h, --help                   help for gota
-      --srcFile string         the apk or ipa file.
-      --title string           application name to be displayed in the site
-      --versionCode string     if srcfile is '.apk', this is required.
-      --versionName string     if srcFile is '.apk', this is required.
-
-Use "gota [command] --help" for more information about a command.
-```
-
 Nexus command help `gota nexus --help`
-
-```bash
-Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
-
-Usage:
-  gota nexus [flags]
-
-Flags:
-  -h, --help                   help for nexus
-      --nexusHost string       nexus host url (including http protocol)
-      --nexusPassword string   nexus password (can be passed as env variable $NEXUS_PASSWORD)
-      --nexusRepo string       nexus site repository id (nexus v3 raw repository not maven!)
-      --nexusUser string       nexus username (can be passed as env variable $NEXUS_USER)
-
-Global Flags:
-      --buildNumber string     the apk or ipa build number.
-      --bundleID string        if srcFile type is '.ipa', this is required. (example: com.example.bundleid)
-      --bundleVersion string   if srcFile type is '.ipa', this is required.
-      --destDir string         root directory of the site to create.
-      --srcFile string         the apk or ipa file.
-      --title string           application name to be displayed in the site
-      --versionCode string     if srcfile is '.apk', this is required.
-      --versionName string     if srcFile is '.apk', this is required.
-```
 
 ### Nexus APK Upload
 
@@ -85,11 +36,7 @@ Upload an APK file to a Nexus Site Repository
             --nexusUser admin \
             --nexusPassword admin123 \
             --destDir android \
-            --buildNumber 1 \
             --srcFile pkg/resources/DarkSouls.apk \
-            --title "DarkSouls" \
-            --versionName "1.0.0" \
-            --versionCode "10222333"
 
 uploaded to nexus: http://localhost:8081/repository/site/android/version.json
 uploaded to nexus: http://localhost:8081/repository/site/android/1.0.0.10222333/index.html
@@ -112,11 +59,7 @@ Upload an IPA file to a Nexus Site Repository
             --nexusUser admin \
             --nexusPassword admin123 \
             --destDir ios \
-            --buildNumber 1 \
             --srcFile pkg/resources/DarkSouls.ipa \
-            --title DarkSouls \
-            --bundleVersion 1.0.0 \
-            --bundleID com.example.com
 
 uploaded to nexus: http://localhost:8081/repository/site/ios/version.json
 uploaded to nexus: http://localhost:8081/repository/site/ios/1.0.0.1/DarkSouls.plist

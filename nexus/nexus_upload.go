@@ -18,12 +18,12 @@ type Nexus struct {
 
 // NexusComponent contains the fields that will be passed as a parameter for NexusUpload
 type NexusComponent struct {
-	SourceFile, Filename, Directory string
+	File, Filename, Directory string
 }
 
 // NexusUpload uploads a file to Nexus returns the uploaded file url
 func (n *Nexus) NexusUpload(c NexusComponent) (string, error) {
-	file, err := os.Open(c.SourceFile)
+	file, err := os.Open(c.File)
 	if err != nil {
 		return "", err
 	}
@@ -53,71 +53,48 @@ func (n *Nexus) getRepoURL() string {
 	return n.HostURL + "/repository/" + n.SiteRepository
 }
 
-// NexusUploadIOSAssets wraps NexusUpload to upload all files for iOS to nexus
-func (n *Nexus) NexusUploadIOSAssets(ipa *parser.IOSIPA, dir string) ([]string, error) {
-	// Upload in directory with FullVersion() as name
-	ipaSitePath := ipa.FullVersion() + "/" + filepath.Base(ipa.SourceFile)
-	ipaPlistSitePath := ipa.FullVersion() + "/" + ipa.Title + ".plist"
-	ipaIndexHTMLSitePath := ipa.FullVersion() + "/index.html"
-	// assume the url before uploaded for templating
-	ipa.DownloadURL = n.getRepoURL() + "/" + dir + "/" + ipaSitePath
-	ipa.PlistURL = htmltemp.URL(n.getRepoURL() + "/" + dir + "/" + ipaPlistSitePath)
-	// create the assets
-	assets := []string{}
-	if err := ipa.GenerateAssets(); err != nil {
-		return assets, err
-	}
-	// upload assets
-	uri, err := n.NexusUpload(NexusComponent{"ios_assets/version.json", "version.json", dir})
-	if err != nil {
-		return assets, err
-	}
-	assets = append(assets, uri)
-	uri, err = n.NexusUpload(NexusComponent{"ios_assets/app.plist", ipaPlistSitePath, dir})
-	if err != nil {
-		return assets, err
-	}
-	assets = append(assets, uri)
-	uri, err = n.NexusUpload(NexusComponent{"ios_assets/index.html", ipaIndexHTMLSitePath, dir})
-	if err != nil {
-		return assets, err
-	}
-	assets = append(assets, uri)
-	uri, err = n.NexusUpload(NexusComponent{ipa.SourceFile, ipaSitePath, dir})
-	if err != nil {
-		return assets, err
-	}
-	assets = append(assets, uri)
-	return assets, nil
-}
+// NexusUploadAssets uploads the generated files by the parser package along with the ipa or apk file
+func (n *Nexus) NexusUploadAssets(app *parser.MobileApp, dir string) ([]string, error) {
+	// create the site path names and assume the url before uploaded for templating
+	appIconPath := app.Version + "/" + parser.AppIconFile
+	appSitePath := app.Version + "/" + filepath.Base(app.File)
+	appIndexHTMLSitePath := app.Version + "/" + parser.IndexHTMLFile
+	app.DownloadURL = n.getRepoURL() + "/" + dir + "/" + appSitePath
 
-// NexusUploadAndroidAssets wraps NexusUpload to upload all files for android to nexus
-func (n *Nexus) NexusUploadAndroidAssets(apk *parser.AndroidAPK, dir string) ([]string, error) {
-	// Upload in directory with FullVersion() as name
-	apkSitePath := apk.FullVersion() + "/" + filepath.Base(apk.SourceFile)
-	apkIndexHTMLSitePath := apk.FullVersion() + "/index.html"
-	// assume the url before uploaded for templating
-	apk.DownloadURL = n.getRepoURL() + "/" + dir + "/" + apkSitePath
+	// default directory of assets
+	assetsDir := parser.AndroidAssetsDir
+
+	// specific for ios
+	var appPlistSitePath string
+	if app.IsIOS() {
+		assetsDir = parser.IOSAssetsDir
+		appPlistSitePath = app.Version + "/" + parser.IOSPlistFile
+		app.PlistURL = htmltemp.URL(n.getRepoURL() + "/" + dir + "/" + appPlistSitePath)
+	}
+
 	// create the assets
 	assets := []string{}
-	if err := apk.GenerateAssets(); err != nil {
+	if err := app.GenerateAssets(); err != nil {
 		return assets, err
 	}
-	// upload assets
-	uri, err := n.NexusUpload(NexusComponent{"ios_assets/version.json", "version.json", dir})
-	if err != nil {
-		return assets, err
+
+	components := []NexusComponent{
+		{assetsDir + "/" + parser.AppIconFile, appIconPath, dir},
+		{assetsDir + "/" + parser.VersionJsonFile, parser.VersionJsonFile, dir},
+		{assetsDir + "/" + parser.IndexHTMLFile, appIndexHTMLSitePath, dir},
+		{app.File, appSitePath, dir},
 	}
-	assets = append(assets, uri)
-	uri, err = n.NexusUpload(NexusComponent{"ios_assets/index.html", apkIndexHTMLSitePath, dir})
-	if err != nil {
-		return assets, err
+	if app.IsIOS() {
+		components = append(components, NexusComponent{assetsDir + "/" + parser.IOSPlistFile, appPlistSitePath, dir})
 	}
-	assets = append(assets, uri)
-	uri, err = n.NexusUpload(NexusComponent{apk.SourceFile, apkSitePath, dir})
-	if err != nil {
-		return assets, err
+
+	for _, component := range components {
+		uri, err := n.NexusUpload(component)
+		if err != nil {
+			return assets, err
+		}
+		assets = append(assets, uri)
 	}
-	assets = append(assets, uri)
+
 	return assets, nil
 }

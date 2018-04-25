@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/bzon/gota/parser"
+	"github.com/bzon/ipapk"
 )
 
 var nexus = Nexus{
@@ -17,9 +18,9 @@ var nexus = Nexus{
 
 func TestNexusUpload(t *testing.T) {
 	var testComponent = NexusComponent{
-		SourceFile: "../resources/index.html",
-		Filename:   "index.html",
-		Directory:  "go_upload_test",
+		File:      "../resources/index.html",
+		Filename:  "index.html",
+		Directory: "go_upload_test",
 	}
 	uri, err := nexus.NexusUpload(testComponent)
 	if err != nil {
@@ -28,43 +29,36 @@ func TestNexusUpload(t *testing.T) {
 	fmt.Println("nexus url:", uri)
 }
 
-func TestGeneratedAssetsNexusUpload(t *testing.T) {
-	var ipa = parser.IOSIPA{
-		AppFile: parser.AppFile{
-			Title:       "DarkSouls",
-			BuildDate:   time.Now().Format(time.RFC822),
-			BuildNumber: "99",
-			SourceFile:  "../resources/DarkSouls.ipa", // dummy file
-		},
-		BundleID:      "com.example.dark.souls",
-		BundleVersion: "1.0.0",
+func TestNexusUploadAssets(t *testing.T) {
+	type tc struct {
+		name    string
+		destDir string
+		file    string
 	}
-	var apk = parser.AndroidAPK{
-		AppFile: parser.AppFile{
-			Title:       "DarkSouls Android",
-			BuildDate:   time.Now().Format(time.RFC822),
-			BuildNumber: "22",
-			SourceFile:  "../resources/DarkSouls.apk", // dummy file
-		},
-		VersionName: "1.0.0",
-		VersionCode: "100222333",
+	tt := []tc{
+		{"upload ios assets", "nexus_ios_repo", "../parser/testdata/sample.ipa"},
+		{"upload android assets", "nexus_android_repo", "../parser/testdata/sample.apk"},
 	}
-	t.Run("upload ipa assets", func(t *testing.T) {
-		assets, err := nexus.NexusUploadIOSAssets(&ipa, "nexus_ios_upload_test")
-		if err != nil {
-			t.Fatal(err)
-		}
-		for _, v := range assets {
-			fmt.Println("nexus url:", v)
-		}
-	})
-	t.Run("upload android assets", func(t *testing.T) {
-		assets, err := nexus.NexusUploadAndroidAssets(&apk, "nexus_android_upload_test")
-		if err != nil {
-			t.Fatal(err)
-		}
-		for _, v := range assets {
-			fmt.Println("nexus url:", v)
-		}
-	})
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			appInfo, err := ipapk.NewAppParser(tc.file)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var app parser.MobileApp
+			app.UploadDate = time.Now().Format(time.RFC1123)
+			app.AppInfo = appInfo
+			app.File = tc.file
+			if err := app.GenerateAssets(); err != nil {
+				t.Fatal(err)
+			}
+			assets, err := nexus.NexusUploadAssets(&app, tc.destDir)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, v := range assets {
+				fmt.Println("nexus url:", v)
+			}
+		})
+	}
 }

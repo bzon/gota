@@ -16,9 +16,8 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
-
-	"github.com/bzon/gota/parser"
 
 	nexuspkg "github.com/bzon/gota/nexus"
 	"github.com/spf13/cobra"
@@ -31,24 +30,16 @@ var nexusCmd = &cobra.Command{
 	Use:   "nexus",
 	Short: "Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository",
 	Run: func(cmd *cobra.Command, args []string) {
-		validateAndParseArgs(cmd)
-		var assets []string
-		var err error
-		app := newApp()
-		switch app.(type) {
-		case parser.IOSIPA:
-			ipa := app.(parser.IOSIPA)
-			assets, err = nexus.NexusUploadIOSAssets(&ipa, destDir)
-		case parser.AndroidAPK:
-			apk := app.(parser.AndroidAPK)
-			assets, err = nexus.NexusUploadAndroidAssets(&apk, destDir)
+		app := NewMobileAppParser()
+		if err := app.GenerateAssets(); err != nil {
+			log.Fatal(err)
 		}
+		assets, err := nexus.NexusUploadAssets(app, destDir)
 		if err != nil {
-			fmt.Printf("failed uploading assets: %+v", err)
-			os.Exit(1)
+			log.Fatal(err)
 		}
-		for _, a := range assets {
-			fmt.Printf("uploaded to nexus: %s\n", a)
+		for _, v := range assets {
+			fmt.Println("nexus asset url:", v)
 		}
 	},
 }
