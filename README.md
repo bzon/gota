@@ -24,7 +24,43 @@ Get the executable binary for your platform from the [Release Page](https://gith
 
 Gota command help `gota --help`
 
+```bash
+./gota --help                                                                                                                                                            
+Go Over the Air installation for Android APK and iOS Ipa files!
+
+Usage:
+  gota [command]
+
+Available Commands:
+  help        Help about any command
+  nexus       Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
+
+Flags:
+      --destDir string   root directory of the site to create.
+  -h, --help             help for gota
+      --srcFile string   the apk or ipa file.
+```
+
 Nexus command help `gota nexus --help`
+
+```bash
+./gota nexus --help                                                                                                                                                      
+Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
+
+Usage:
+  gota nexus [flags]
+
+Flags:
+  -h, --help                   help for nexus
+      --nexusHost string       nexus host url (including http protocol)
+      --nexusPassword string   nexus password (can be passed as env variable $NEXUS_PASSWORD)
+      --nexusRepo string       nexus site repository id (nexus v3 raw repository not maven!)
+      --nexusUser string       nexus username (can be passed as env variable $NEXUS_USER)
+
+Global Flags:
+      --destDir string   root directory of the site to create.
+      --srcFile string   the apk or ipa file.
+```
 
 ### Nexus APK Upload
 
@@ -35,7 +71,7 @@ Upload an APK file to a Nexus Site Repository
             --nexusRepo site \
             --nexusUser admin \
             --nexusPassword admin123 \
-            --destDir android \
+            --destDir nexus_android_repo \
             --srcFile pkg/resources/DarkSouls.apk \
 
 file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/appicon.png
@@ -46,10 +82,6 @@ file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10
 
 Access the index.html file url from your Android device!
 
-Uploaded site structure
-
-![](./docs/apk_nexus_uploaded.png)
-
 ### Nexus IPA Upload
 
 Upload an IPA file to a Nexus Site Repository
@@ -59,7 +91,7 @@ Upload an IPA file to a Nexus Site Repository
             --nexusRepo site \
             --nexusUser admin \
             --nexusPassword admin123 \
-            --destDir ios \
+            --destDir nexus_ios_repo \
             --srcFile pkg/resources/DarkSouls.ipa \
 
 file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/appicon.png
@@ -70,10 +102,6 @@ file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/app.
 ```
 
 Access the index.html file url from your iPhone device!
-
-Uploaded site structure
-
-![](./docs/ios_nexus_uploaded.png)
 
 ## Development Setup
 
