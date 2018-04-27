@@ -41,9 +41,15 @@ var nexusCmd = &cobra.Command{
 		}
 		for _, v := range assets {
 			log.Println("file uploaded:", v)
-			// write the index.html file (the ota link) to a file
+			// write the index.html file (the ota link) to a file to gotalink.txt
 			if strings.Contains(v, "index.html") {
 				if err := ioutil.WriteFile("gotalink.txt", []byte(v), 0644); err != nil {
+					log.Fatal(err)
+				}
+			}
+			// write the ipa download link to a file ipalink.txt
+			if strings.Contains(v, ".ipa") {
+				if err := ioutil.WriteFile("ipalink.txt", []byte(v), 0644); err != nil {
 					log.Fatal(err)
 				}
 			}
