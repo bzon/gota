@@ -1,1 +1,0 @@
-http://localhost:8081/repository/site/testing/1.0.0/4/sample.ipa
