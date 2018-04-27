@@ -15,8 +15,10 @@
 package cmd
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 
 	nexuspkg "github.com/bzon/gota/nexus"
 	"github.com/spf13/cobra"
@@ -39,6 +41,12 @@ var nexusCmd = &cobra.Command{
 		}
 		for _, v := range assets {
 			log.Println("file uploaded:", v)
+			// write the index.html file (the ota link) to a file
+			if strings.Contains(v, "index.html") {
+				if err := ioutil.WriteFile("gotalink.txt", []byte(v), 0644); err != nil {
+					log.Fatal(err)
+				}
+			}
 		}
 	},
 }
