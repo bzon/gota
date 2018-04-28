@@ -81,7 +81,7 @@ func (n *Nexus) NexusUploadAssets(app *parser.MobileApp, dir string) ([]string, 
 
 	components := []NexusComponent{
 		{assetsDir + "/" + parser.AppIconFile, appIconPath, dir},
-		{assetsDir + "/" + parser.VersionJsonFile, parser.VersionJsonFile, dir},
+		{assetsDir + "/" + parser.VersionJsonFile, app.Version + "/" + parser.VersionJsonFile, dir},
 		{assetsDir + "/" + parser.IndexHTMLFile, appIndexHTMLSitePath, dir},
 		{app.File, appSitePath, dir},
 	}
