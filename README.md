@@ -6,19 +6,23 @@
 
 Automate the beta testing distribution of your Android and iOS application files with gota.
 
-Gota is a [Golang](http://golang.org/) powered Over the Air Installation site creation tool.
+Gota is a [Golang](http://golang.org/) powered Over the Air Installation site creation command line tool.
 
 ![](./docs/gota_workflow.png)
 
-## Feature Checklist
+## Features Checklist
 
-* [x] Upload and generate site to a Nexus 3 Site Repository
-* [x] Upload and generate site to an Amazon S3 bucket
-* [ ] Upload and generate site to a Nexus 2 Site Repository
+Supported Static Website Hosting Service
+
+* [x] Amazon S3 Bucket
+* [x] Nexus 3 Site Repository
+* [ ] DigitalOcean Spaces 
+* [ ] Standalone Gota Server
+* [ ] Nexus 2 Site Repository
 
 ## Installation
 
-Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/)
+Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/). Currently, Linux, macOS and Windows are supported.
 
 If you have Go installed, just run `go get github.com/bzon/gota`.
 
@@ -53,7 +57,7 @@ export AWS_SECRET_ACCESS_KEY=xxxxx
 2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/app.plist
 ```
 
-__NOTE__: Currently, gota assigns a AES256 encrpytion and a public-read ACL to all files that are uploaded.
+__NOTE__: Currently, gota assigns an AES256 encryption and a public-read ACL to all files that are uploaded.
 This may change to be configurable in the future.
 
 ### Upload to Nexus
@@ -126,10 +130,6 @@ You must have a Nexus 3 server running in your machine.
 Get it easily via docker command: `docker run -d -p 8081:8081 --name nexus3`.
 
 Then, create a Raw Repository with a repository id `site`.
-
-### S3 Feature Test
-
-WIP
 
 ## Inspirations and References
 
