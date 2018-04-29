@@ -86,10 +86,10 @@ destDir
 \__(ipa CFBundleShortVersion or apk versionName)
    \__version.json
    \__(ipa CFBundleVersion or apk versionCode)
-      \__appicon.png
-	  \__(ipa or apk file)
-	  \__app.plist (if ipa file)
-	  \__index.html
+	 \__appicon.png
+	 \__(ipa or apk file)
+	 \__app.plist (if ipa file)
+	 \__index.html
 ```
 
 ## Development Setup
@@ -101,7 +101,7 @@ go get -v ./...
 go test -v ./...
 ```
 
-If you are on Windows, ensure to go get spf13/cobra's dependency for it. 
+If you are on Windows, ensure to go get spf13/cobra's dependency for it.
 
 ```bash
 GOOS=windows go get -v -u github.com/spf13/cobra
@@ -121,7 +121,7 @@ GOTEST_AWS_BUCKET=example-bucket
 
 ### Nexus Feature Test
 
-You must have a Nexus 3 server running in your machine. 
+You must have a Nexus 3 server running in your machine.
 
 Get it easily via docker command: `docker run -d -p 8081:8081 --name nexus3`.
 
