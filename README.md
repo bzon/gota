@@ -20,7 +20,7 @@ Gota is a [Golang](http://golang.org/) powered Over the Air Installation site cr
 
 Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/)
 
-If you have Go installed, just run `go get githug.com/bzon/gota`.
+If you have Go installed, just run `go get github.com/bzon/gota`.
 
 ## User Guide
 
