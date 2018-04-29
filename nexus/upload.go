@@ -18,17 +18,17 @@ type Nexus struct {
 
 // NexusComponent contains the fields that will be passed as a parameter for NexusUpload
 type NexusComponent struct {
-	File, Filename, Directory string
+	SrcFile, DestFilePath string
 }
 
 // NexusUpload uploads a file to Nexus returns the uploaded file url
 func (n *Nexus) NexusUpload(c NexusComponent) (string, error) {
-	file, err := os.Open(c.File)
+	file, err := os.Open(c.SrcFile)
 	if err != nil {
 		return "", err
 	}
 	defer file.Close()
-	uri := n.getRepoURL() + "/" + c.Directory + "/" + c.Filename
+	uri := n.getRepoURL() + "/" + c.DestFilePath
 	req, err := http.NewRequest("PUT", uri, file)
 	if err != nil {
 		return "", err
@@ -54,13 +54,13 @@ func (n *Nexus) getRepoURL() string {
 }
 
 // NexusUploadAssets uploads the generated files by the parser package along with the ipa or apk file
-func (n *Nexus) NexusUploadAssets(app *parser.MobileApp, dir string) ([]string, error) {
+func (n *Nexus) NexusUploadAssets(app *parser.MobileApp, destBaseDir string) ([]string, error) {
 	// create the site path names and assume the url before uploaded for templating
-	buildDir := app.Version + "/" + app.Build
+	buildDir := destBaseDir + "/" + app.Version + "/" + app.Build
 	appIconPath := buildDir + "/" + parser.AppIconFile
 	appSitePath := buildDir + "/" + filepath.Base(app.File)
 	appIndexHTMLSitePath := buildDir + "/" + parser.IndexHTMLFile
-	app.DownloadURL = n.getRepoURL() + "/" + dir + "/" + appSitePath
+	app.DownloadURL = n.getRepoURL() + "/" + appSitePath
 
 	// default directory of assets
 	assetsDir := parser.AndroidAssetsDir
@@ -70,7 +70,7 @@ func (n *Nexus) NexusUploadAssets(app *parser.MobileApp, dir string) ([]string, 
 	if app.IsIOS() {
 		assetsDir = parser.IOSAssetsDir
 		appPlistSitePath = buildDir + "/" + parser.IOSPlistFile
-		app.PlistURL = htmltemp.URL(n.getRepoURL() + "/" + dir + "/" + appPlistSitePath)
+		app.PlistURL = htmltemp.URL(n.getRepoURL() + "/" + appPlistSitePath)
 	}
 
 	// create the assets
@@ -80,13 +80,13 @@ func (n *Nexus) NexusUploadAssets(app *parser.MobileApp, dir string) ([]string, 
 	}
 
 	components := []NexusComponent{
-		{assetsDir + "/" + parser.AppIconFile, appIconPath, dir},
-		{assetsDir + "/" + parser.VersionJsonFile, app.Version + "/" + parser.VersionJsonFile, dir},
-		{assetsDir + "/" + parser.IndexHTMLFile, appIndexHTMLSitePath, dir},
-		{app.File, appSitePath, dir},
+		{assetsDir + "/" + parser.AppIconFile, appIconPath},
+		{assetsDir + "/" + parser.VersionJsonFile, destBaseDir + "/" + app.Version + "/" + parser.VersionJsonFile},
+		{assetsDir + "/" + parser.IndexHTMLFile, appIndexHTMLSitePath},
+		{app.File, appSitePath},
 	}
 	if app.IsIOS() {
-		components = append(components, NexusComponent{assetsDir + "/" + parser.IOSPlistFile, appPlistSitePath, dir})
+		components = append(components, NexusComponent{assetsDir + "/" + parser.IOSPlistFile, appPlistSitePath})
 	}
 
 	for _, component := range components {
