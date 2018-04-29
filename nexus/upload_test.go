@@ -18,9 +18,8 @@ var nexus = Nexus{
 
 func TestNexusUpload(t *testing.T) {
 	var testComponent = NexusComponent{
-		File:      "../resources/index.html",
-		Filename:  "index.html",
-		Directory: "go_upload_test",
+		SrcFile:      "../resources/index.html",
+		DestFilePath: "go_upload_test/index.html",
 	}
 	uri, err := nexus.NexusUpload(testComponent)
 	if err != nil {
@@ -36,8 +35,8 @@ func TestNexusUploadAssets(t *testing.T) {
 		file    string
 	}
 	tt := []tc{
-		{"upload ios assets", "nexus_ios_repo", "../parser/testdata/sample.ipa"},
-		{"upload android assets", "nexus_android_repo", "../parser/testdata/sample.apk"},
+		{"upload ios assets", "xx_ios", "../parser/testdata/sample.ipa"},
+		{"upload android assets", "xx_android", "../parser/testdata/sample.apk"},
 	}
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {

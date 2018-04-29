@@ -33,15 +33,6 @@ var srcFile, destDir string
 var rootCmd = &cobra.Command{
 	Use:   "gota",
 	Short: "Go Over the Air installation for Android APK and iOS Ipa files!",
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	appInfo, err := ipapk.NewAppParser(srcFile)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	app.UploadDate = time.Now().Format(time.RFC1123)
-	// 	app.AppInfo = appInfo
-	// 	app.File = srcFile
-	// },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

@@ -8,100 +8,89 @@ Automate the beta testing distribution of your Android and iOS application files
 
 Gota is a [Golang](http://golang.org/) powered Over the Air Installation site creation tool.
 
-![](./docs/gota_html.png)
+![](./docs/gota_workflow.png)
 
 ## Feature Checklist
 
 * [x] Upload and generate site to a Nexus 3 Site Repository
-* [ ] Upload and generate site to a Nexus 2 Site Repository (untested)
-* [ ] Upload and generate site to an Amazon S3 bucket
+* [x] Upload and generate site to an Amazon S3 bucket
+* [ ] Upload and generate site to a Nexus 2 Site Repository
 
 ## Installation
 
-Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/).
+Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/)
 
-## Commands Guide
+If you have Go installed, just run `go get githug.com/bzon/gota`.
 
-Gota command help `gota --help`
+## User Guide
+
+To see the required flags, use the --help flag.
 
 ```bash
-./gota --help                                                                                                                                                            
-Go Over the Air installation for Android APK and iOS Ipa files!
-
-Usage:
-  gota [command]
-
-Available Commands:
-  help        Help about any command
-  nexus       Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
-
-Flags:
-      --destDir string   root directory of the site to create.
-  -h, --help             help for gota
-      --srcFile string   the apk or ipa file.
+gota --help
+gota nexus --help
+gota s3 --help
 ```
 
-Nexus command help `gota nexus --help`
+Gota creates a `gotalink.txt` and `ipalink.txt` (if uploading an ipa) that contains the url or direct download link.
+
+If you are using a CI server, you can have it read these files for quickly getting the url that you can send to your team.
+
+### Upload to S3 Bucket
+
 
 ```bash
-./gota nexus --help                                                                                                                                                      
-Upload your apk or ipa file and create an over-the-air static site in a Nexus Site repository
+# set the aws credentials
+export AWS_ACCESS_KEY=xxxxx
+export AWS_SECRET_ACCESS_KEY=xxxxx
 
-Usage:
-  gota nexus [flags]
+./gota s3 --bucket example-s3-bucket --srcFile sample.ipa --destDir ios_bucket
 
-Flags:
-  -h, --help                   help for nexus
-      --nexusHost string       nexus host url (including http protocol)
-      --nexusPassword string   nexus password (can be passed as env variable $NEXUS_PASSWORD)
-      --nexusRepo string       nexus site repository id (nexus v3 raw repository not maven!)
-      --nexusUser string       nexus username (can be passed as env variable $NEXUS_USER)
-
-Global Flags:
-      --destDir string   root directory of the site to create.
-      --srcFile string   the apk or ipa file.
+2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/appicon.png
+2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/version.json
+2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/index.html
+2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/sample.ipa
+2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/app.plist
 ```
 
-### Nexus APK Upload
+__NOTE__: Currently, gota assigns a AES256 encrpytion and a public-read ACL to all files that are uploaded.
+This may change to be configurable in the future.
 
-Upload an APK file to a Nexus Site Repository
+### Upload to Nexus
+
+The repository must be a [Raw Site Repository](https://help.sonatype.com/repomanager3/raw-repositories-and-maven-sites).
 
 ```bash
+# set the nexus credentials
+# this can also be set via command flags
+export NEXUS_USER=admin
+export NEXUS_PASSWORD=admin123
+
 ./gota nexus --nexusHost http://localhost:8081 \
             --nexusRepo site \
-            --nexusUser admin \
-            --nexusPassword admin123 \
             --destDir nexus_android_repo \
-            --srcFile pkg/resources/DarkSouls.apk \
+            --srcFile build/outpus/apk/sample.apk \
 
 file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/appicon.png
-file uploaded: http://localhost:8081/repository/site/nexus_android_repo/version.json
+file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/version.json
 file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/index.html
-file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/DarkSouls.apk
+file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/sample.apk
 ```
 
-Access the index.html file url from your Android device!
+__NOTE__: Currently supports only Nexus 3.
 
-### Nexus IPA Upload
-
-Upload an IPA file to a Nexus Site Repository
+### Site Directory Layout
 
 ```bash
-./gota nexus --nexusHost http://localhost:8081 \
-            --nexusRepo site \
-            --nexusUser admin \
-            --nexusPassword admin123 \
-            --destDir nexus_ios_repo \
-            --srcFile pkg/resources/DarkSouls.ipa \
-
-file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/appicon.png
-file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/version.json
-file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/index.html
-file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/DarkSouls.ipa
-file uploaded: http://localhost:8081/repository/site/nexus_ios_repo/1.0.0/4/app.plist
+destDir
+\__(ipa CFBundleShortVersion or apk versionName)
+   \__version.json
+   \__(ipa CFBundleVersion or apk versionCode)
+      \__appicon.png
+	  \__(ipa or apk file)
+	  \__app.plist (if ipa file)
+	  \__index.html
 ```
-
-Access the index.html file url from your iPhone device!
 
 ## Development Setup
 
@@ -118,6 +107,16 @@ If you are on Windows, ensure to go get spf13/cobra's dependency for it.
 GOOS=windows go get -v -u github.com/spf13/cobra
 go get -v ./...
 go test -v ./...
+```
+
+### S3 Feature Test
+
+Set these environment variables before running `go test` in s3 package.
+
+```bash
+AWS_ACCESS_KEY=xxxxx
+AWS_SECRET_ACCESS_KEY=xxxxx
+GOTEST_AWS_BUCKET=example-bucket
 ```
 
 ### Nexus Feature Test
