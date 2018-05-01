@@ -51,6 +51,11 @@ type MobileApp struct {
 	DownloadURL string
 	PlistURL    htmltemp.URL
 	File        string
+	Changelogs  []Changelog
+}
+
+type Changelog struct {
+	Author, Date, Subject string
 }
 
 // GenerateAssets creates the site assets that will be uploaded along with the ipa or apk file

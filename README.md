@@ -1,18 +1,22 @@
-# GOTA
+# About gota
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/bzon/gota)](https://goreportcard.com/report/github.com/bzon/gota)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/bzon/gota)
 [![GitHub tag](https://img.shields.io/github/tag/bzon/gota.svg)](https://github.com/bzon/gota/releases/)
 
-Automate the beta testing distribution of your Android and iOS application files with gota.
+Automate the beta testing distribution of your Android and iOS application files.
 
-Gota is a [Golang](http://golang.org/) powered Over the Air Installation site creation command line tool.
+__gota__ is a just command line tool that you can easily integrate in your current continuous integration workflow with tools such as Fastlane.
 
 ![](./docs/gota_workflow.png)
 
-## Features Checklist
+__gota__ automatically detects the build information of your ipa or apk files and creates an OTA (over the air) installation site that is uploaded to your desired hosting server.
 
-Supported Static Website Hosting Service
+|Android						  |iOS							  |
+|---------------------------------|-------------------------------|
+|![](./docs/samplesite_android.png)|![](./docs/samplesite_ios.png)|
+
+## Supported Static Hosting Service
 
 * [x] Amazon S3 Bucket
 * [x] Nexus 3 Site Repository
@@ -20,13 +24,17 @@ Supported Static Website Hosting Service
 * [ ] Standalone Gota Server
 * [ ] Nexus 2 Site Repository
 
-## Installation
+## Getting Started
 
-Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/). Currently, Linux, macOS and Windows are supported.
+### Installation
+
+Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/).
+
+Currently, Linux, macOS and Windows are supported.
 
 If you have Go installed, just run `go get github.com/bzon/gota`.
 
-## User Guide
+### Help Flags
 
 To see the required flags, use the --help flag.
 
@@ -36,12 +44,7 @@ gota nexus --help
 gota s3 --help
 ```
 
-Gota creates a `gotalink.txt` and `ipalink.txt` (if uploading an ipa) that contains the url or direct download link.
-
-If you are using a CI server, you can have it read these files for quickly getting the url that you can send to your team.
-
-### Upload to S3 Bucket
-
+### Uploading to S3 Bucket
 
 ```bash
 # set the aws credentials
@@ -60,7 +63,7 @@ export AWS_SECRET_ACCESS_KEY=xxxxx
 __NOTE__: Currently, gota assigns an AES256 encryption and a public-read ACL to all files that are uploaded.
 This may change to be configurable in the future.
 
-### Upload to Nexus
+### Uploading to Nexus
 
 The repository must be a [Raw Site Repository](https://help.sonatype.com/repomanager3/raw-repositories-and-maven-sites).
 
@@ -83,6 +86,10 @@ file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10
 
 __NOTE__: Currently supports only Nexus 3.
 
+### Extra Features
+
+__gota__ creates a `gotalink.txt` and `ipalink.txt` (if uploading an ipa) that contains the url or direct download link. If you are using a CI server, you can have it read these files for quickly getting the url that you can send to your team.
+
 ### Site Directory Layout
 
 ```bash
@@ -96,14 +103,7 @@ destDir
 	 \__index.html
 ```
 
-## Development Setup
-
-### Build and Test
-
-```bash
-go get -v ./...
-go test -v ./...
-```
+## Developers
 
 If you are on Windows, ensure to go get spf13/cobra's dependency for it.
 
@@ -113,7 +113,7 @@ go get -v ./...
 go test -v ./...
 ```
 
-### S3 Feature Test
+### Testing S3 Feature
 
 Set these environment variables before running `go test` in s3 package.
 
@@ -123,7 +123,7 @@ AWS_SECRET_ACCESS_KEY=xxxxx
 GOTEST_AWS_BUCKET=example-bucket
 ```
 
-### Nexus Feature Test
+### Testing Nexus Feature
 
 You must have a Nexus 3 server running in your machine.
 
@@ -131,7 +131,7 @@ Get it easily via docker command: `docker run -d -p 8081:8081 --name nexus3`.
 
 Then, create a Raw Repository with a repository id `site`.
 
-## Inspirations and References
+## Motivation
 
 * [Fastlane Nexus Upload](https://docs.fastlane.tools/actions/nexus_upload/)
 * [Fastlane S3 Plugin](https://github.com/joshdholtz/fastlane-plugin-s3/)
