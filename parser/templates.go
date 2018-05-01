@@ -90,10 +90,6 @@ var indexHTMLTemplateString = `<!DOCTYPE HTML5>
                 text-indent: 0px;   
                 vertical-align:bottom;             
             }
-            .demo-card-wide > .mdl-card__details {
-				margin: 0 auto;
-				text-align: center;
-            }
             .demo-card-wide > .mdl-card__menu {
                 color: #fff;
             }
@@ -171,13 +167,9 @@ var indexHTMLTemplateString = `<!DOCTYPE HTML5>
                     </a>
 					{{end -}}
                 </div>
-                <div class="mdl-card__menu">
-                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">share</i>
-                    </button>
-                </div>
             </div>
             <!-- Release Notes -->
+			{{if .Changelogs}}
             <table class="mdl-data-table mdl-shadow--2dp mdl-js-data-table release-note">
                 <thead>
 					<tr>
@@ -196,6 +188,7 @@ var indexHTMLTemplateString = `<!DOCTYPE HTML5>
 					{{end}}
                 </tbody>
             </table>
+			{{end}}
         </div>
     </body>
 </html>
