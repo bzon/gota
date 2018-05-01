@@ -63,96 +63,140 @@ const plistTemplateString = `<?xml version="1.0" encoding="UTF-8"?>
 </dict>
 </plist>`
 
-var indexHTMLTemplateString = `<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>Install {{.Name}}</title>
-  </head>
-  <body>
-    <style type="text/css">
-      * {
-        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-        text-align: center;
-        background-color: #f5f5f5;
-      }
-      .oneRow {
-        width: 100%;
-        overflow: auto;
-        overflow-y: hidden;
-        white-space: nowrap;
-        text-align: center;
-      }
-      .download {
-        margin: 30px;
-        font-size: 130%;
-      }
-      #appIcon {
-        -webkit-border-radius: 22.544%;
-        -moz-border-radius: 22.544%;
-        -ms-border-radius: 22.544%;
-          border-radius: 22.544%;
-        margin-bottom: 30px;
-      }
-      a {
-        text-decoration: none;
-        color: blue;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      #footnote {
-        color: #737373;
-        font-size: 14px;
-      }
-      #finished { display: none; }
-      #fastlaneLogo {
-        text-align: center;
-        max-width: 150px;
-        margin-top: 10px;
-      }
-    </style>
+var indexHTMLTemplateString = `<!DOCTYPE HTML5>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <style>
+		  	* {
+				font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		  	}
+            .main-container {
+                height: inherit;
+                width: inherit;
+                margin-top: 2%;
+            }
+            .demo-card-wide.mdl-card {
+                width: 512px;
+                margin: 0 auto;
+            }
+            .demo-card-wide > .mdl-card__title {
+                color: #fff;
+                height: 116px;
+                background: #3c8fc6 center / cover;
+                text-indent: 0px;   
+                vertical-align:bottom;             
+            }
+            .demo-card-wide > .mdl-card__details {
+				margin: 0 auto;
+				text-align: center;
+            }
+            .demo-card-wide > .mdl-card__menu {
+                color: #fff;
+            }
+            .logo {
+                background: url('appicon.png') center / cover;
+                display: block; 
+                float: left;
+                width: 80px;
+                height: 80px;
+            }
+            .logo-title {
+                display: block; 
+                float: left;
+                text-indent: 2%;
+                height: 80px;
+                line-height: 80px;
+            }
+            .release-note {
+                margin: 0 auto; 
+                margin-top: 10px; 
+                width: 512px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main-container">
+            <!-- elease Details -->
+            <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <div class="logo"></div>
+                    <div class="logo-title mdl-card__title-text">{{.Name}}</div>
+                </div>
+                <div class="mdl-card__supporting-text" style="padding: 0; width: 100%">
+                    <table class="mdl-data-table mdl-js-data-table" style="width: 100%; border: 0px">
+                        <tbody>
+							{{if .IsIOS -}}
+                            <tr>
+                    	        <td class="mdl-data-table__cell--non-numeric">CFBundleShortVersion</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{.Version}}</td>
+							</tr>
+							<tr>
+                    	        <td class="mdl-data-table__cell--non-numeric">CFBundleVersion</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{.Build}}</td>
+							</tr>
+							{{else -}}
+							<tr>
+                    	        <td class="mdl-data-table__cell--non-numeric">Version Name</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{.Version}}</td>
+							</tr>
+							<tr>
+                    	        <td class="mdl-data-table__cell--non-numeric">Version Code</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{.Build}}</td>
+							</tr>
+							{{end -}}
+							<tr>
+                    	        <td class="mdl-data-table__cell--non-numeric">Bundle ID</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{.BundleId}}</td>
+							</tr>
+							<tr>
+                    	        <td class="mdl-data-table__cell--non-numeric">Upload Date</td>
+                                <td class="mdl-data-table__cell--non-numeric">{{.UploadDate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <h1 style="text-align: center;">{{.Name}}</h1>
-
-	{{if .IsIOS -}}
-	<a href="{{.PlistURL}}"><img src="appicon.png" id="appIcon"></a>
-    <div class="oneRow">
-      <span class="download" id="ios">
-        <a href="itms-services://?action=download-manifest&amp;url={{.PlistURL}}" id="text" class="btn btn-lg btn-default" onclick="document.getElementById('finished').id = '';">
-			Install {{.Name}} {{.Version}} ({{.Build}})
-        </a>
-        <br>
-		<p>Uploaded on {{.UploadDate}}</p>
-      </span>
-    </div>
-
-    <p id="finished">
-      App is being installed. Close your Browser using the home button.
-    </p>
-	{{- else}}	
-	<a href="{{.DownloadURL}}"><img src="appicon.png" id="appIcon"></a>
-    <div class="oneRow">
-      <span class="download" id="android">
-        <a href="{{.DownloadURL}}" id="text" class="btn btn-lg btn-default" onclick="document.getElementById('finished').id = '';">
-          Install {{.Name}} {{.Version}} ({{.Build}})
-        </a>
-        <br>
-        <p>Uploaded on {{.UploadDate}}</p>
-      </span>
-    </div>
-
-    <p id="finished">
-      App is being installed. You might have to close the browser.
-    </p>
-
-	{{- end}}
-    <p id="footnote">
-	This is a beta version and is not meant for the public.
-    </p>
-  </body>
-
-  <script type='text/javascript'>
-    document.getElementById("desktop").remove()
-  </script>
-</html>`
+                <div class="mdl-card__actions mdl-card--border">
+					{{if .IsIOS -}}
+                    <a href="itms-services://?action=download-manifest&amp;url={{.PlistURL}}" class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    Install
+                    </a>
+					{{else -}}
+					<a href="{{.DownloadURL}}" class="mdl-button mdl-button--raised mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                    Install
+                    </a>
+					{{end -}}
+                </div>
+                <div class="mdl-card__menu">
+                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                    <i class="material-icons">share</i>
+                    </button>
+                </div>
+            </div>
+            <!-- Release Notes -->
+            <table class="mdl-data-table mdl-shadow--2dp mdl-js-data-table release-note">
+                <thead>
+					<tr>
+                       <th class="mdl-data-table__cell--non-numeric">Date</th>
+                       <th class="mdl-data-table__cell--non-numeric">Author</th>
+                       <th class="mdl-data-table__cell--non-numeric">Subject</th>
+					</tr>
+                </thead>
+                <tbody>
+					{{range .Changelogs}}
+                    <tr>
+                        <td class="mdl-data-table__cell--non-numeric">{{.Date}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{.Author}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{.Subject}}</td>
+                    </tr>
+					{{end}}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+`

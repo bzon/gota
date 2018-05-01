@@ -48,6 +48,18 @@ func TestGenerateAssets(t *testing.T) {
 			app.UploadDate = time.Now().Format(time.RFC1123)
 			app.AppInfo = appInfo
 			app.File = tc.file
+			app.Changelogs = []Changelog{
+				{
+					Date:    time.Now().Format(time.RFC1123),
+					Author:  "doge@doge.com",
+					Subject: "Dico delectus facilisi cum ad, est soluta populo ne.",
+				},
+				{
+					Date:    time.Now().Add(-24 * time.Hour).Format(time.RFC1123),
+					Author:  "cat@cat.com",
+					Subject: "Sed ipsum congue quaestio ei, eu mundi iudico accusamus vix.",
+				},
+			}
 			if err := app.GenerateAssets(); err != nil {
 				t.Fatal(err)
 			}
