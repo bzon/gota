@@ -35,6 +35,10 @@ var srcFile, destDir string
 var rootCmd = &cobra.Command{
 	Use:   "gota",
 	Short: "Go Over the Air installation for Android APK and iOS Ipa files!",
+	Run: func(cmd *cobra.Command, args []string) {
+		cmd.SetVersionTemplate("v0.1.4")
+	},
+	Version: getVersion(),
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
