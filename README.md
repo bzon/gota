@@ -46,13 +46,22 @@ gota s3 --help
 
 ### Uploading to S3 Bucket
 
+Set the AWS API key securely.
+
 ```bash
-# set the aws credentials
 export AWS_ACCESS_KEY=xxxxx
 export AWS_SECRET_ACCESS_KEY=xxxxx
+```
 
-./gota s3 --bucket example-s3-bucket --srcFile sample.ipa --destDir ios_bucket
+Command input:
 
+```bash
+gota s3 --bucket example-s3-bucket --srcFile sample.ipa --destDir ios_bucket
+```
+
+Command output:
+
+```bash
 2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/appicon.png
 2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/version.json
 2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/index.html
@@ -60,31 +69,44 @@ export AWS_SECRET_ACCESS_KEY=xxxxx
 2018/04/30 01:12:37 file uploaded: https://example-s3-bucket.s3.amazonaws.com/ios_bucket/1.0.0/4/app.plist
 ```
 
-__NOTE__: Currently, gota assigns an AES256 encryption and a public-read ACL to all files that are uploaded.
-This may change to be configurable in the future.
+__NOTE__:
+
+Currently, gota assigns an AES256 encryption and a public-read ACL to all files that are uploaded. This may change to be configurable in the future.
 
 ### Uploading to Nexus
 
 The repository must be a [Raw Site Repository](https://help.sonatype.com/repomanager3/raw-repositories-and-maven-sites).
+
+Set the Nexus credentials securely.
 
 ```bash
 # set the nexus credentials
 # this can also be set via command flags
 export NEXUS_USER=admin
 export NEXUS_PASSWORD=admin123
+```
 
-./gota nexus --nexusHost http://localhost:8081 \
+Command input:
+
+```bash
+gota nexus --nexusHost http://localhost:8081 \
             --nexusRepo site \
             --destDir nexus_android_repo \
-            --srcFile build/outpus/apk/sample.apk \
+            --srcFile build/outpus/apk/sample.apk
+```
 
+Command output:
+
+```bash
 file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/appicon.png
 file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/version.json
 file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/index.html
 file uploaded: http://localhost:8081/repository/site/nexus_android_repo/1.0.0/10222333/sample.apk
 ```
 
-__NOTE__: Currently supports only Nexus 3.
+__NOTE__:
+
+Currently supports only Nexus 3.
 
 ### Extra Features
 
