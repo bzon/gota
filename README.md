@@ -30,6 +30,18 @@ __gota__ automatically detects the build information of your ipa or apk files an
 
 Get the executable binary for your platform from the [Release Page](https://github.com/bzon/gota/releases/).
 
+```bash
+# downloading via wget
+wget https://github.com/bzon/gota/releases/download/0.1.4/gota-linux-amd64
+# symlink
+ln -sv gota-linux-amd64 /usr/bin/gota
+
+# test gota
+gota --version
+# command output
+gota version v0.1.4 darwin/amd64
+```
+
 Currently, Linux, macOS and Windows are supported.
 
 If you have Go installed, just run `go get github.com/bzon/gota`.
