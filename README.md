@@ -3,6 +3,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/bzon/gota)](https://goreportcard.com/report/github.com/bzon/gota)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/bzon/gota)
 [![GitHub tag](https://img.shields.io/github/tag/bzon/gota.svg)](https://github.com/bzon/gota/releases/)
+[![Total downloads](https://img.shields.io/github/downloads/bzon/gota/total.svg)](https://github.com/bzon/gota/releases/)
 
 Automate the beta testing distribution of your Android and iOS application files.
 
