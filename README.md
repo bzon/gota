@@ -36,7 +36,8 @@ Get the executable binary for your platform from the [Release Page](https://gith
 ```bash
 # downloading via wget
 wget https://github.com/bzon/gota/releases/download/0.1.4/gota-linux-amd64
-# symlink
+
+# rename the executable
 mv gota-linux-amd64 gota
 
 # test gota
@@ -51,7 +52,8 @@ gota version v0.1.4 linux/amd64
 ```bash
 # downloading via wget
 wget https://github.com/bzon/gota/releases/download/0.1.4/gota-windows-amd64.exe
-# symlink
+
+# rename the executable
 mv gota-windows-amd64.exe gota.exe
 
 # test gota
@@ -66,7 +68,8 @@ gota version v0.1.4 windows/amd64
 ```bash
 # downloading via wget
 wget https://github.com/bzon/gota/releases/download/0.1.4/gota-darwin-amd64
-# symlink
+
+# rename the executable
 mv gota-darwin-amd64 gota
 
 # test gota
