@@ -29,6 +29,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 
 	htmltemp "html/template"
 
@@ -54,7 +55,6 @@ func UploadFile(upload Upload) (string, error) {
 	}
 	defer f.Close()
 
-	// Set the content-type so that the file like index.html can be viewed directly from the browser
 	fileInfo, _ := f.Stat()
 	var size int64 = fileInfo.Size()
 	buffer := make([]byte, size)
@@ -63,6 +63,10 @@ func UploadFile(upload Upload) (string, error) {
 		return "", err
 	}
 	contentType := http.DetectContentType(buffer)
+	// Set the content-type so that the file like index.html can be viewed directly from the browser
+	if strings.Contains(upload.SrcFile, "html") {
+		contentType = "text/html"
+	}
 
 	// Create a new session
 	sess := session.Must(session.NewSession())
