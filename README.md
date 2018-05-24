@@ -35,7 +35,7 @@ Get the executable binary for your platform from the [Release Page](https://gith
 
 ```bash
 # downloading via wget
-wget https://github.com/bzon/gota/releases/download/0.1.4/gota-linux-amd64
+wget https://github.com/bzon/gota/releases/download/0.1.6/gota-linux-amd64
 
 # rename the executable
 mv gota-linux-amd64 gota
@@ -44,14 +44,14 @@ mv gota-linux-amd64 gota
 ./gota --version
 
 # command output
-gota version v0.1.4 linux/amd64
+gota version v0.1.6 linux/amd64
 ```
 
 #### Windows
 
 ```bash
 # downloading via wget
-wget https://github.com/bzon/gota/releases/download/0.1.4/gota-windows-amd64.exe
+wget https://github.com/bzon/gota/releases/download/0.1.6/gota-windows-amd64.exe
 
 # rename the executable
 mv gota-windows-amd64.exe gota.exe
@@ -60,14 +60,14 @@ mv gota-windows-amd64.exe gota.exe
 gota.exe --version
 
 # command output
-gota version v0.1.4 windows/amd64
+gota version v0.1.6 windows/amd64
 ```
 
 #### OSX
 
 ```bash
 # downloading via wget
-wget https://github.com/bzon/gota/releases/download/0.1.4/gota-darwin-amd64
+wget https://github.com/bzon/gota/releases/download/0.1.6/gota-darwin-amd64
 
 # rename the executable
 mv gota-darwin-amd64 gota
@@ -76,7 +76,7 @@ mv gota-darwin-amd64 gota
 ./gota --version
 
 # command output
-gota version v0.1.4 darwin/amd64
+gota version v0.1.6 darwin/amd64
 ```
 
 ### Go Installation
