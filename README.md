@@ -1,3 +1,7 @@
+# NO MAINTENANCE NOTICE 
+
+I don't maintain this repository anymore. Feel free to fork if needed.
+
 # About gota
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/bzon/gota)](https://goreportcard.com/report/github.com/bzon/gota)
